@@ -1,3 +1,2 @@
 # Routable
-
-A description of this package.
+Simple composable screen routing in Swift
