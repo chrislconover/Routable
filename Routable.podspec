@@ -26,9 +26,10 @@ Screen routing for UIKit based controllers.  Suports deep linking into modal vie
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'chrislconover' => 'github@curiousapplications.com' }
   s.source           = { :git => 'https://github.com/chrislconover/Routable.git' }
+# s.source           = { :git => 'https://github.com/chrislconover/Routable.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.swift_version = '4.0'
+  s.swift_version = '4.2'
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'Sources/**/*'
