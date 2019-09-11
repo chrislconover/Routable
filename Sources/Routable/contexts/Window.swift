@@ -10,7 +10,7 @@ import UIKit
 
 extension Context {
 
-    static func window(_ context: Context) -> Context {
+    public static func window(_ context: Context) -> Context {
         return Window(container: context) }
 
     class Window: Root {

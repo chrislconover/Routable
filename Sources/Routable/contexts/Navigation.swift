@@ -10,9 +10,9 @@ import UIKit
 
 extension Context {
 
-    static func navigation(_ route: RouteType) -> Navigation {
+    public static func navigation(_ route: RouteType) -> Navigation {
         return Navigation(route: route) }
-    static func navigation(_ route: Route) -> Navigation {
+    public static func navigation(_ route: Route) -> Navigation {
         return Navigation(route: route) }
 
 

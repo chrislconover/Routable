@@ -10,11 +10,11 @@ import UIKit
 
 extension Context {
 
-    static func push(_ route: RouteType) -> Push {
+    public static func push(_ route: RouteType) -> Push {
         return Push(route: route) }
-    static func push(_ route: Route) -> Push {
+    public static func push(_ route: Route) -> Push {
         return Push(route: route) }
-    static func push(_ nav: Navigation) -> Push {
+    public static func push(_ nav: Navigation) -> Push {
         return Push(container: nav) }
 
     class Push: Context {
@@ -22,7 +22,7 @@ extension Context {
                               completion: ((UIViewController) -> Void)?) {
             guard let from = from,
                 let nav = from as? UINavigationController ?? from.navigationController
-                else { return router.present(.root(.navigation(self.route)), animated: false) }
+                else { return router.present(.root2(.navigation(self.route)), animated: false) }
             nav.pushViewController(self.viewController, animated: animated)
             super.present(
                 with: router, from: from, animated: false,

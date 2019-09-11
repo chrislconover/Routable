@@ -24,7 +24,7 @@ extension UIViewController: RouteType {
 
 
 public class AnyRoute: Route {
-    init(buildWith: @escaping () -> UIViewController) { self.buildWith = buildWith }
+    public init(buildWith: @escaping () -> UIViewController) { self.buildWith = buildWith }
     var buildWith: () -> UIViewController
     private lazy var lazyInstance: UIViewController = buildWith()
     public override var viewController: UIViewController { return lazyInstance }
