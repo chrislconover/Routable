@@ -10,24 +10,24 @@ import UIKit
 
 
 
-protocol RouteType {
+public protocol RouteType {
     var viewController: UIViewController { get }
 }
 
-class Route: RouteType {
-    var viewController: UIViewController { fatalError("abstract base") }
+public class Route: RouteType {
+    public var viewController: UIViewController { fatalError("abstract base") }
 }
 
 extension UIViewController: RouteType {
-    var viewController: UIViewController { return self }
+    public var viewController: UIViewController { return self }
 }
 
 
-class AnyRoute: Route {
+public class AnyRoute: Route {
     init(buildWith: @escaping () -> UIViewController) { self.buildWith = buildWith }
     var buildWith: () -> UIViewController
     private lazy var lazyInstance: UIViewController = buildWith()
-    override var viewController: UIViewController { return lazyInstance }
+    public override var viewController: UIViewController { return lazyInstance }
 }
 
 

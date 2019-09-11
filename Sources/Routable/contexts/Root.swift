@@ -11,15 +11,15 @@ import UIKit
 
 extension Context {
 
-    static func root(_ route: RouteType, animation: TransitionStrategy? = nil) -> Root {
+    public static func root(_ route: RouteType, animation: TransitionStrategy? = nil) -> Root {
         return Root(route: route, animation: animation) }
-    static func root(_ route: Route, animation: TransitionStrategy? = nil) -> Root {
+    public static func root(_ route: Route, animation: TransitionStrategy? = nil) -> Root {
         return Root(route: route, animation: animation) }
-    static func root(_ container: Context, animation: TransitionStrategy? = nil) -> Root {
+    public static func root(_ container: Context, animation: TransitionStrategy? = nil) -> Root {
         return Context.Root(container: container, animation: animation) }
 
 
-    class Root: Context {
+    public class Root: Context {
 
         init(route: RouteType, animation: TransitionStrategy? = nil) {
             super.init(route: route)

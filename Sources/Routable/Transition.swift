@@ -7,9 +7,9 @@
 
 import UIKit
 
-typealias TransitionStrategy = (UIView, @escaping (() -> Void), ((Bool) -> Void)?) -> Void
+public typealias TransitionStrategy = (UIView, @escaping (() -> Void), ((Bool) -> Void)?) -> Void
 
-class Transition {
+public class Transition {
 
     static var flipIn: TransitionStrategy {
         return viewTransitionWith(option: .transitionFlipFromRight)

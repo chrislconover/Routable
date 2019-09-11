@@ -11,25 +11,25 @@ import UIKit
 extension Context {
 
 
-    static func modal(_ route: RouteType, customTransition: Modal.CustomTransition? = nil)
+    public static func modal(_ route: RouteType, customTransition: Modal.CustomTransition? = nil)
         -> Context {
             return Modal(route: route, customTransition: customTransition)
     }
 
-    static func modal(_ route: Route, customTransition: Modal.CustomTransition? = nil)
+    public static func modal(_ route: Route, customTransition: Modal.CustomTransition? = nil)
         -> Context {
             return Modal(route: route, customTransition: customTransition)
     }
 
-    static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil)
+    public static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil)
         -> Context {
         return Modal(container: nav, customTransition: customTransition)
     }
 
 
-    class Modal: Context {
+    public class Modal: Context {
 
-        typealias CustomTransition = (UIViewController, UIViewController) -> UIViewControllerTransitioningDelegate
+        public typealias CustomTransition = (UIViewController, UIViewController) -> UIViewControllerTransitioningDelegate
 
         //        init(route: Route, customTransition: CustomTransition? = nil) {
         //            self.customTransition = customTransition

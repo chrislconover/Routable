@@ -16,7 +16,7 @@ extension Context {
         return Navigation(route: route) }
 
 
-    class Navigation: Context {
+    public class Navigation: Context {
         override init(route: RouteType) {
             super.init(route: route, containerController:
                 UINavigationController(rootViewController: route.viewController))
