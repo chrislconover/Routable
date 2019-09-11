@@ -17,12 +17,12 @@ extension Context {
     public static func push(_ nav: Navigation) -> Push {
         return Push(container: nav) }
 
-    class Push: Context {
-        override func present(with router: Router, from: UIViewController?, animated: Bool,
+    public class Push: Context {
+        override public func present(with router: Router, from: UIViewController?, animated: Bool,
                               completion: ((UIViewController) -> Void)?) {
             guard let from = from,
                 let nav = from as? UINavigationController ?? from.navigationController
-                else { return router.present(.root2(.navigation(self.route)), animated: false) }
+                else { return router.present(.root(.navigation(self.route)), animated: false) }
             nav.pushViewController(self.viewController, animated: animated)
             super.present(
                 with: router, from: from, animated: false,
@@ -31,7 +31,7 @@ extension Context {
                     completion?(viewController) })
         }
 
-        override func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
+        override public func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
             viewController.navigationController?.popViewController(animated: animated)
             super.dismiss(with: router, animated: false, completion: nil)
         }
