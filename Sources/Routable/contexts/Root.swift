@@ -39,7 +39,7 @@ extension Context {
             self.animation = animation
         }
 
-        override func present(with router: Router, from: UIViewController?, animated: Bool,
+        public override func present(with router: Router, from: UIViewController?, animated: Bool,
                               completion: ((UIViewController) -> Void)?) {
 
             let transition: () -> Void = { [unowned self] in
@@ -62,7 +62,7 @@ extension Context {
             completion?(viewController)
         }
 
-        override func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
+        public override func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
             assert(false, "can't dismiss root controller")
         }
 

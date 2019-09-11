@@ -64,22 +64,22 @@ open class Context: Routable {
         self.viewController = proxyController
     }
 
-    func present(with router: Router, from: UIViewController?,
+    public func present(with router: Router, from: UIViewController?,
                  animated: Bool, completion: ((UIViewController) -> Void)?) {
-        Logger.route("\(#function) Adding \(self) to stack")
+        Diagnostics.logger?.route("\(#function) Adding \(self) to stack")
         router.routes.push(self)
         container?.present(with: router, from: from, animated: animated, completion: completion)
     }
 
-    func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
-        Logger.route("\(#function).\(#line) before popping self: \(router.routes)")
+    public func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
+       Diagnostics.logger?.route("\(#function).\(#line) before popping self: \(router.routes)")
         router.routes.pop()
-        Logger.route("\(#function).\(#line) after popping self: \(router.routes)")
+       Diagnostics.logger?.route("\(#function).\(#line) after popping self: \(router.routes)")
     }
 
     var unwindProxy: RouteProxyController!
     var route: RouteType
-    var viewController: UIViewController
+    public var viewController: UIViewController
     var container: Context? // indicates that contents is container, not content view controller
 }
 

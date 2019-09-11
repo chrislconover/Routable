@@ -54,7 +54,7 @@ extension Context {
             super.init(container: container)
         }
 
-        override func present(with router: Router, from: UIViewController?, animated: Bool,
+        public override func present(with router: Router, from: UIViewController?, animated: Bool,
                               completion: ((UIViewController) -> Void)?) {
             guard let from = from else {
                 assert(false, "Are you sure you want to convert a modal into a root controller?")
@@ -77,7 +77,7 @@ extension Context {
                 completion?(viewController) })
         }
 
-        override func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
+        public override func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
             viewController.dismiss(animated: animated, completion: completion)
             super.dismiss(with: router, animated: animated, completion: completion)
         }

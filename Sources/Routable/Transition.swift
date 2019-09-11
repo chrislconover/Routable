@@ -11,15 +11,15 @@ public typealias TransitionStrategy = (UIView, @escaping (() -> Void), ((Bool) -
 
 public class Transition {
 
-    static var flipIn: TransitionStrategy {
+    public static var flipIn: TransitionStrategy {
         return viewTransitionWith(option: .transitionFlipFromRight)
     }
 
-    static var flipOut: TransitionStrategy {
+    public static var flipOut: TransitionStrategy {
         return viewTransitionWith(option: .transitionFlipFromLeft)
     }
 
-    static func viewTransitionWith(option: UIView.AnimationOptions) -> TransitionStrategy {
+    private static func viewTransitionWith(option: UIView.AnimationOptions) -> TransitionStrategy {
         return { container, animation, completion in
             UIView.transition(
                 with: container,

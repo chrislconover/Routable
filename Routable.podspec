@@ -34,5 +34,8 @@ Screen routing for UIKit based controllers.  Suports deep linking into modal vie
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  
+  
+  s.dependency 'Veneer' # * -see below
+  # # requires that pod 'Veneer' :git => 'https://github.com/chrislconover/Veneer.git' be included above Routable in podfile
 end

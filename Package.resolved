@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Veneer",
+        "repositoryURL": "https://github.com/chrislconover/Veneer.git",
+        "state": {
+          "branch": null,
+          "revision": "d85f6d4194411b5a2bbc163d93838b15b845076e",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
