@@ -12,6 +12,13 @@ import UIKit
 
 public protocol RouteType {
     var viewController: UIViewController { get }
+    var name: String { get }
+}
+
+extension RouteType {
+    public var name: String {
+        return String(describing: type(of: self))
+    }
 }
 
 public class Route: RouteType {
