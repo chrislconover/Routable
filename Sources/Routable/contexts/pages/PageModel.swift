@@ -85,22 +85,22 @@ public class PagesModel {
     }
 
     func before(page: PageBuilder.Key) throws -> UIViewController? {
-        let before = try index(of: page).clamped(to: (1 ... pages.count))
+        let before = try (index(of: page) - 1).clamped(to: (0 ..< pages.count))
+        return pages[before].viewController
+    }
+
+    func before(page: UIViewController) throws -> UIViewController {
+        let before = try (index(of: page) - 1).clamped(to: (0 ..< pages.count))
         return pages[before].viewController
     }
 
     func after(page: PageBuilder.Key) throws -> UIViewController {
-        let after = try index(of: page).clamped(to: (0 ..< pages.count))
+        let after = try (index(of: page) + 1).clamped(to: (0 ..< pages.count))
         return pages[after].viewController
     }
 
-    func before(page: UIViewController) throws -> UIViewController? {
-        let before = try index(of: page).clamped(to: (1 ... pages.count))
-        return pages[before].viewController
-    }
-
     func after(page: UIViewController) throws -> UIViewController {
-        let after = try index(of: page).clamped(to: (0 ..< pages.count))
+        let after = try (index(of: page) + 1).clamped(to: (0 ..< pages.count))
         return pages[after].viewController
     }
 

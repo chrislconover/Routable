@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class PageViewController: UIPageViewController {
 
     init(model: PagesModel,
@@ -44,11 +43,15 @@ extension PageViewController: UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        return try! model.before(page: viewController)
+        let before = try! model.before(page: viewController)
+        Logger.route("PageViewController.\(#function) -> \(before.routeName)")
+        return before
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        return try! model.after(page: viewController)
+        let after = try! model.after(page: viewController)
+        Logger.route("PageViewController.\(#function) -> \(after.routeName)")
+        return after
     }
 }
 
@@ -56,11 +59,6 @@ extension PageViewController: UIPageViewControllerDataSource {
 extension PageViewController: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController,
                             spineLocationFor orientation: UIInterfaceOrientation) -> UIPageViewController.SpineLocation {
-        //        let currentViewController = self.pageViewController.viewControllers![0]
-        //        let viewControllers = [currentViewController]
-        //        self.pageViewController.setViewControllers(viewControllers, direction: .forward, animated: true, completion: {done in })
-        //
-        //        self.pageViewController.isDoubleSided = false
-        return .min
+        return .none
     }
 }
