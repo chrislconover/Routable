@@ -12,11 +12,11 @@ import UIKit
 
 public protocol RouteType {
     var viewController: UIViewController { get }
-    var name: String { get }
+    var routeName: String { get }
 }
 
 extension RouteType {
-    public var name: String {
+    public var routeName: String {
         return String(describing: type(of: self))
     }
 }

@@ -16,12 +16,12 @@ extension String: Error {}
 public class PageBuilder: RouteType {
 
     public init(_ route: RouteType) {
-        self.key = { String(route.name) }
+        self.key = { String(route.routeName) }
         self.builder = { route.viewController }
     }
 
     public init(_ route: Route) {
-        self.key = { String(route.name) }
+        self.key = { String(route.routeName) }
         self.builder = { route.viewController }
     }
 
