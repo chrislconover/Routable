@@ -28,10 +28,10 @@ public class Router {
         return window?.rootViewController }
 
     public func present(_ context: Context, animated: Bool, completion: ((UIViewController) -> Void)? = nil) {
-       Diagnostics.logger?.route("\(#function).\(#line) before: \(routes)")
+        Logger.route("\(#function).\(#line) before: \(routes)")
         let from = displayedViewController
         context.present(with: self, from: from, animated: animated, completion: completion)
-       Diagnostics.logger?.route("\(#function).\(#line) after: \(routes)")
+        Logger.route("\(#function).\(#line) after: \(routes)")
     }
 
     @discardableResult
@@ -57,24 +57,24 @@ public class Router {
     }
 
     public func pop(animated: Bool = true, completion: (() -> Void)? = nil) {
-       Diagnostics.logger?.route("\(#function).\(#line) before: \(routes)")
-        defer {Diagnostics.logger?.route("\(#function).\(#line) after: \(routes)") }
+        Logger.route("\(#function).\(#line) before: \(routes)")
+        defer { Logger.route("\(#function).\(#line) after: \(routes)") }
 
         guard let top = routes.top,
             let _ = top.viewController.navigationController
             else {
-               Diagnostics.logger?.error("Attempting to pop from nav controller but there is no immediately accessibly nav controller: \(String(describing: routes.top?.viewController))")
+                Logger.error("Attempting to pop from nav controller but there is no immediately accessibly nav controller: \(String(describing: routes.top?.viewController))")
                 assert(false)
                 return
         }
 
-       Diagnostics.logger?.route("\(#function).\(#line) top is: \(top)")
+        Logger.route("\(#function).\(#line) top is: \(top)")
         top.dismiss(with: self, animated: animated, completion: completion)
     }
-
+    
     public func dismissModal(`for` controller: UIViewController? = nil, animated: Bool = true,
-                      completion: (() -> Void)? = nil) {
-       Diagnostics.logger?.route("\(#function).\(#line) before: \(routes)")
+                             completion: (() -> Void)? = nil) {
+        Logger.route("\(#function).\(#line) before: \(routes)")
 
         let poppedToModal = routes.popped(until: { route in
             guard let route = route as? Context.Modal else { return false }
@@ -84,7 +84,7 @@ public class Router {
         guard let modal = poppedToModal.top else { return }
         routes = poppedToModal
         modal.dismiss(with: self, animated: animated, completion: completion)
-       Diagnostics.logger?.route("\(#function).\(#line) after: \(routes)")
+        Logger.route("\(#function).\(#line) after: \(routes)")
     }
 }
 

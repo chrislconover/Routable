@@ -9,7 +9,6 @@
 import UIKit
 
 
-
 open class Context: Routable {
 
     /**
@@ -66,15 +65,15 @@ open class Context: Routable {
 
     public func present(with router: Router, from: UIViewController?,
                  animated: Bool, completion: ((UIViewController) -> Void)?) {
-        Diagnostics.logger?.route("\(#function) Adding \(self) to stack")
+        Logger.route("\(#function) Adding \(self) to stack")
         router.routes.push(self)
         container?.present(with: router, from: from, animated: animated, completion: completion)
     }
 
     public func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
-       Diagnostics.logger?.route("\(#function).\(#line) before popping self: \(router.routes)")
+       Logger.route("\(#function).\(#line) before popping self: \(router.routes)")
         router.routes.pop()
-       Diagnostics.logger?.route("\(#function).\(#line) after popping self: \(router.routes)")
+       Logger.route("\(#function).\(#line) after popping self: \(router.routes)")
     }
 
     var unwindProxy: RouteProxyController!
