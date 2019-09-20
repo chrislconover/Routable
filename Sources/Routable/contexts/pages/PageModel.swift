@@ -37,13 +37,15 @@ public class PageBuilder: RouteType {
         self.builder = builder
     }
 
-    public typealias Key = String
-    var key: () -> Key
-    var builder: () -> UIViewController
+    public var routeName: String { return viewController.routeName }
     public var viewController: UIViewController {
         if existing == nil { existing = createOnUse }
         return createOnUse
     }
+
+    public typealias Key = String
+    var key: () -> Key
+    var builder: () -> UIViewController
     var existing: UIViewController?
     private lazy var createOnUse: UIViewController = builder()
 }
