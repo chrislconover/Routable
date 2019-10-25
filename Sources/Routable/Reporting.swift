@@ -12,10 +12,9 @@ extension LoggerType {
     public static func route(
         _ format: String,
         _ args: CVarArg...,
-        file: String = URL(string: #file)?.lastPathComponent ?? #file,
+        file: String = #file,
         function: String = #function,
         line: Int = #line) {
-
         debug(format, args, file: file, function: function, line: line)
     }
 }

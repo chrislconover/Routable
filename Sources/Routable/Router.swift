@@ -28,10 +28,10 @@ public class Router {
         return window?.rootViewController }
 
     public func present(_ context: Context, animated: Bool, completion: ((UIViewController) -> Void)? = nil) {
-        Logger.route("\(#function).\(#line) before: \(routes)")
+        Logger.route("before: \(routes)")
         let from = displayedViewController
         context.present(with: self, from: from, animated: animated, completion: completion)
-        Logger.route("\(#function).\(#line) after: \(routes)")
+        Logger.route("after: \(routes)")
     }
 
     @discardableResult
