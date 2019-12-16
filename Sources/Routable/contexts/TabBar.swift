@@ -7,48 +7,38 @@
 
 import UIKit
 
+public struct RouteTab {
+
+    public static func tab(_ route: RouteType,
+                    tab: ((UITabBarItem) -> Void)! = nil) -> RouteTab {
+        RouteTab(route, tab: tab)
+    }
+
+    public static func tab(_ route: Route, tab: ((UITabBarItem) -> Void)! = nil) -> RouteTab {
+        RouteTab(route, tab: tab)
+    }
+
+    private init(_ route: RouteType, tab: ((UITabBarItem) -> Void)! = nil) {
+        self.route = route
+        self.configureIcon = tab
+    }
+
+    public private(set) var route: RouteType
+    public private(set) var configureIcon: ((UITabBarItem) -> Void)!
+}
+
 extension Context {
 
-    public static func tabBar(_ first: RouteType,
-                              _ second: RouteType,
-                              _ third: RouteType? = nil,
-                              _ fourth: RouteType? = nil,
-                              _ fifth: RouteType? = nil) -> TabBar {
-        return TabBar(tabs: [first, second, third, fourth, fifth]
-            .compactMap {
-                guard let route = $0 else { return nil }
-                print(route.routeName)
-                route.viewController.tabBarItem.title = route.routeName
-                return route.viewController
-        })
-    }
-
-    public static func tabBar(_ first: Route,
-                              _ second: Route,
-                              _ third: Route? = nil,
-                              _ fourth: Route? = nil,
-                              _ fifth: Route? = nil) -> TabBar {
-        return TabBar(tabs: [first, second, third, fourth, fifth]
-            .compactMap {
-                guard let route = $0 else { return nil }
-                print(route.routeName)
-                route.viewController.tabBarItem.title = route.routeName
-                return route.viewController
-        })
-    }
-
-    public static func tabBar2(_ first: Route,
-                              _ second: Route,
-                              _ third: Route? = nil,
-                              _ fourth: Route? = nil,
-                              _ fifth: Route? = nil) -> TabBar {
-        return TabBar(tabs: [first, second, third, fourth, fifth]
-            .compactMap {
-                guard let route = $0 else { return nil }
-                print(route.routeName)
-                route.viewController.tabBarItem.title = route.routeName
-                return route.viewController
-        })
+    public static func tabBar(_ first: RouteTab,
+                              _ second: RouteTab,
+                              _ third: RouteTab? = nil,
+                              _ fourth: RouteTab? = nil,
+                              _ fifth: RouteTab? = nil) -> TabBar {
+        let controllers: [UIViewController] = [first, second, third, fourth, fifth].compactMap {
+            guard let tab = $0 else { return nil }
+            tab.configureIcon?(tab.route.viewController.tabBarItem)
+            return tab.route.viewController }
+        return TabBar(tabs: controllers)
     }
 
     public class TabBar: Context {
