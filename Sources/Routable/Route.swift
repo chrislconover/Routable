@@ -10,17 +10,6 @@ import UIKit
 
 
 
-public protocol RouteType {
-    var routeName: String { get }
-    var viewController: UIViewController { get }
-}
-
-extension RouteType where Self: UIViewController {
-    public var routeName: String {
-        return String(describing: type(of: self))
-    }
-}
-
 public class Route: RouteType {
     public var routeName: String { fatalError("abstract base") }
     public var viewController: UIViewController { fatalError("abstract base") }
@@ -28,6 +17,12 @@ public class Route: RouteType {
 
 extension UIViewController: RouteType {
     public var viewController: UIViewController { return self }
+}
+
+extension RouteType where Self: UIViewController {
+    public var routeName: String {
+        return String(describing: type(of: self))
+    }
 }
 
 

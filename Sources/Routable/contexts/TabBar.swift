@@ -18,13 +18,17 @@ public struct RouteTab {
         RouteTab(route, tab: tab)
     }
 
+    public static func tab(_ route: Context, tab: ((UITabBarItem) -> Void)! = nil) -> RouteTab {
+        RouteTab(route, tab: tab)
+    }
+
     private init(_ route: RouteType, tab: ((UITabBarItem) -> Void)! = nil) {
         self.route = route
-        self.configureIcon = tab
+        self.configureTabItem = tab
     }
 
     public private(set) var route: RouteType
-    public private(set) var configureIcon: ((UITabBarItem) -> Void)!
+    public private(set) var configureTabItem: ((UITabBarItem) -> Void)!
 }
 
 extension Context {
@@ -36,7 +40,7 @@ extension Context {
                               _ fifth: RouteTab? = nil) -> TabBar {
         let controllers: [UIViewController] = [first, second, third, fourth, fifth].compactMap {
             guard let tab = $0 else { return nil }
-            tab.configureIcon?(tab.route.viewController.tabBarItem)
+            tab.configureTabItem?(tab.route.viewController.tabBarItem)
             return tab.route.viewController }
         return TabBar(tabs: controllers)
     }
