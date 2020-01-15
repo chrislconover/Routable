@@ -8,15 +8,29 @@
 
 import UIKit
 
+
 extension Context {
 
-    public static func window(_ context: Context) -> Context {
-        return Window(container: context) }
+    public static func window(_ context: Context) -> Context { Window(container: context) }
+    public static func window(_ route: RouteType) -> Context { Window(route: route) }
+    public static func window(_ route: Route) -> Context { Window(route: route) }
 
     class Window: Root {
 
+        class OverlayWindow: UIWindow {
+            deinit {
+                print("releasing UIWindow")
+            }
+        }
+
+        override init(route: RouteType, animation: TransitionStrategy? = nil) {
+            overlay = OverlayWindow(frame: UIScreen.main.bounds)
+            super.init(route: route)
+            self.animation = animation
+        }
+
         override fileprivate init(container: Context, animation: TransitionStrategy? = nil) {
-            overlay = UIWindow(frame: UIScreen.main.bounds)
+            overlay = OverlayWindow(frame: UIScreen.main.bounds)
             super.init(container: container)
             self.animation = animation
         }

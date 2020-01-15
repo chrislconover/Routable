@@ -15,7 +15,6 @@ public class Router {
 
     public init(window: UIWindow!) {
         self.window = window
-        window.makeKeyAndVisible()
     }
 
     var displayedViewController: UIViewController? {
