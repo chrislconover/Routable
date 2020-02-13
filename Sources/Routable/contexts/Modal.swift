@@ -11,21 +11,43 @@ import UIKit
 extension Context {
 
 
-    public static func modal(_ route: RouteType, customTransition: Modal.CustomTransition? = nil)
-        -> Context {
-            return Modal(route: route, customTransition: customTransition)
+    public static func modal(_ route: RouteType, customTransition: Modal.CustomTransition? = nil) -> Context {
+        Modal(route: route, customTransition: customTransition)
     }
 
-    public static func modal(_ route: Route, customTransition: Modal.CustomTransition? = nil)
-        -> Context {
-            return Modal(route: route, customTransition: customTransition)
+    public static func modal(_ route: RouteType,
+                             presentation: UIModalPresentationStyle,
+                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
+        Modal(route: route, configure: { from, to in
+                to.modalPresentationStyle = presentation
+                to.modalTransitionStyle = transition })
     }
 
-    public static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil)
-        -> Context {
-        return Modal(container: nav, customTransition: customTransition)
+
+    public static func modal(_ route: Route, customTransition: Modal.CustomTransition? = nil) -> Context {
+        Modal(route: route, customTransition: customTransition)
     }
 
+    public static func modal(_ route: Route,
+                             presentation: UIModalPresentationStyle,
+                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
+        Modal(route: route, configure: { from, to in
+                to.modalPresentationStyle = presentation
+                to.modalTransitionStyle = transition })
+    }
+
+
+    public static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil) -> Context {
+        Modal(container: nav, customTransition: customTransition)
+    }
+
+    public static func modal(_ nav: Navigation,
+                             presentation: UIModalPresentationStyle,
+                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
+        Modal(container: nav, configure: { from, to in
+                to.modalPresentationStyle = presentation
+                to.modalTransitionStyle = transition })
+    }
 
     public class Modal: Context {
 
@@ -49,8 +71,18 @@ extension Context {
             super.init(route: route)
         }
 
+        init(route: RouteType, configure: @escaping (UIViewController, UIViewController) -> Void) {
+            self.configure = configure
+            super.init(route: route)
+        }
+
         init(container: Context, customTransition: CustomTransition? = nil) {
             self.customTransition = customTransition
+            super.init(container: container)
+        }
+
+        init(container: Context, configure: @escaping (UIViewController, UIViewController) -> Void) {
+            self.configure = configure
             super.init(container: container)
         }
 
@@ -71,6 +103,10 @@ extension Context {
                 viewController.transitioningDelegate = customDelegate
             }
 
+            else if let configure = configure {
+                configure(from, viewController)
+            }
+
             from.present(viewController, animated: animated, completion: { [weak self] in
                 customDelegate = nil
                 guard let viewController = self?.viewController else { return }
@@ -82,7 +118,8 @@ extension Context {
             super.dismiss(with: router, animated: animated, completion: completion)
         }
 
-        var customTransition: CustomTransition?
+        var customTransition: CustomTransition? = nil
+        var configure: ((UIViewController, UIViewController) -> Void)? = nil
     }
 }
 
