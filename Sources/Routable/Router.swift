@@ -17,7 +17,7 @@ public class Router {
         self.window = window
     }
 
-    var displayedViewController: UIViewController? {
+    public var displayedViewController: UIViewController? {
         return window.rootViewController?.displayedViewController
     }
 
