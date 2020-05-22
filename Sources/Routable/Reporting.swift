@@ -15,6 +15,6 @@ extension LoggerType {
         file: String = #file,
         function: String = #function,
         line: Int = #line) {
-        debug(format, args, file: file, function: function, line: line)
+//        debug(format, args, file: file, function: function, line: line)
     }
 }
