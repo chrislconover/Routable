@@ -12,7 +12,7 @@ import Foundation
 
 extension Sequence {
 
-    var byPairs: AnySequence<(Element, Element)> {
+    var withPrevious: AnySequence<(Element, Element)> {
         var iterator = self.makeIterator()
         guard var previous = iterator.next() else { return AnySequence([]) }
         return AnySequence({ () -> AnyIterator<(Element, Element)> in
