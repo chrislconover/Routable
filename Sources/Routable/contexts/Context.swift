@@ -66,6 +66,10 @@ open class Context: RoutableType {
     public func present(with router: Router, from: UIViewController?,
                  animated: Bool, completion: ((UIViewController) -> Void)?) {
         Logger.route("\(#function) Adding \(self) to stack")
+        
+        guard let root = router.window.rootViewController else {
+            return router.present(.root(self), animated: false) }
+        
         let top = router.routes.top
         router.routes.push(self)
         container?.present(with: router, from: from, animated: animated, completion: completion)
