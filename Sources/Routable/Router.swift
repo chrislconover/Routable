@@ -74,24 +74,21 @@ public class Router {
     /**
      Dismisses zero ore more modal view controllers. If there are no modals on the stack, this does nothing.  If `unwindTo` (view controller) is specified, then it keeps unwinding until the same instasnce is found it finds that view controller.  If `unwindTo` is specified but not found, this does nothing.
 
-     - Parameter unwindTo:    Opitonal view modal controller to unwind to
+     - Parameter unwindTo:    Optional view modal controller to unwind to
      - Parameter animated:    Optional flag to specify whether or not the operation is animated
      - Parameter completion:  Optional handler to be called when the operation is complete
      */
     public func dismissModal(toPresenting controller: UIViewController? = nil,
                              animated: Bool = true, completion: (() -> Void)? = nil) {
-        Logger.route("\(#function).\(#line) before: \(routes.map { $0.routeName })")
-
-        let poppedToModal = routes.popped(until: { route in
-            guard let route = route as? Context.Modal else { return false }
-            guard let controller = controller else { return true }
-            return route.viewController.presentingViewController === controller
-        })
-        guard let modalRoute = poppedToModal.top else { return }
-        routes = poppedToModal
-        modalRoute.dismiss(with: self, animated: animated, completion: completion)
-        Logger.route("\(#function).\(#line) after: \(routes.map { $0.routeName })")
+        dismissModal(
+            until: { route in
+                guard let route = route as? Context.Modal else { return false }
+                guard let controller = controller else { return true }
+                return route.viewController.presentingViewController === controller },
+            animated: animated,
+            completion: completion)
     }
+
 
     /**
      Dismisses zero ore more modal view controllers.  If `unwindTo` is  not found, this does nothing.
@@ -100,19 +97,31 @@ public class Router {
      - Parameter animated:    Optional flag to specify whether or not the operation is animated
      - Parameter completion:  Optional handler to be called when the operation is complete
      */
-    public func dismissModal(toPresenting route: Route, animated: Bool = true,
+    public func dismissModal(toPresenting: Route, animated: Bool = true,
                              completion: (() -> Void)? = nil) {
+        dismissModal(
+            until: { route in
+                guard let route = route as? Context.Modal else { return false }
+                Logger.route("looking for route: \(toPresenting.routeName) in \(route.routeName)")
+                return route.viewController.presentingViewController?.routeName == route.routeName },
+            animated: animated,
+            completion: completion)
+    }
+    
+    /**
+     Dismisses zero ore more modal view controllers. If there are no modals on the stack, this does nothing.  If `unwindTo` (view controller) is specified, then it keeps unwinding until the same instasnce is found it finds that view controller.  If `unwindTo` is specified but not found, this does nothing.
+
+     - Parameter until:    Optional closure to indicate how far to unwind
+     - Parameter animated:    Optional flag to specify whether or not the operation is animated
+     - Parameter completion:  Optional handler to be called when the operation is complete
+     */
+    public func dismissModal(until: (Context) -> Bool,
+                             animated: Bool = true, completion: (() -> Void)? = nil) {
         defer { Logger.route("\(#function).\(#line) after: \(routes.map { $0.routeName })") }
         Logger.route("\(#function).\(#line) before: \(routes.map { $0.routeName })")
 
-        Logger.route("\(#function).\(#line) looking for route: \(route.routeName)")
-        let poppedToModal = routes.popped(until: { route in
-            guard let route = route as? Context.Modal else { return false }
-            return route.viewController.presentingViewController?.routeName == route.routeName
-        })
-        guard let modalRoute = poppedToModal.top else {
-            return
-        }
+        let poppedToModal = routes.popped(until: until)
+        guard let modalRoute = poppedToModal.top else { return }
         routes = poppedToModal
         modalRoute.dismiss(with: self, animated: animated, completion: completion)
     }
