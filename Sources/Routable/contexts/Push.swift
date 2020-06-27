@@ -18,11 +18,12 @@ extension Context {
         return Push(container: nav) }
 
     public class Push: Context {
-        override public func present(with router: Router, from: UIViewController?, animated: Bool,
-                              completion: ((UIViewController) -> Void)?) {
+        override public func present(with router: Router, from: UIViewController?,
+                                     animated: Bool, completion: ((UIViewController) -> Void)?) {
             guard let from = from,
                 let nav = from as? UINavigationController ?? from.navigationController
-                else { return router.present(.root(.navigation(self.route)), animated: false) }
+                else { return router.present(.modal(.navigation(self.route)), animated: false) }
+            
             nav.pushViewController(self.viewController, animated: animated)
             super.present(
                 with: router, from: from, animated: false,
