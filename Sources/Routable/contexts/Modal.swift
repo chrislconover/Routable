@@ -114,7 +114,9 @@ extension Context {
         }
 
         public override func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
-            viewController.dismiss(animated: animated, completion: completion)
+            guard let presenting = viewController.presentingViewController else {
+                return assert(false, "Modal context should always have presenting controller!") }
+            presenting.dismiss(animated: animated, completion: completion)
             super.dismiss(with: router, animated: animated, completion: completion)
         }
 

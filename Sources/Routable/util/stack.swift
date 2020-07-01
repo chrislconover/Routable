@@ -34,27 +34,52 @@ public struct Stack<T> {
     }
 
     @discardableResult
-    mutating public func pop(until: (T) -> Bool) -> T? {
-        var check = top
-        while check != nil && !until(check!) {
-            pop()
-            check = top
+    mutating public func pop(where popWhere: (T) -> Bool) -> T? {
+        var last: T?
+        while let top = top, popWhere(top) {
+            last = pop()
         }
 
-        return array.popLast()
+        return last
+    }
+    
+    @discardableResult
+    mutating public func pop(first: Int, where popWhere: (T) -> Bool) -> T? {
+        var remaining = first
+        var last: T?
+        while let top = top, remaining > 0, popWhere(top) {
+            last = pop()
+            remaining -= 1
+        }
+
+        return last
     }
 
-    public func popped(until: (T) -> Bool) -> Stack {
+    public func popped(where popWhere: (T) -> Bool) -> Stack {
         var popped = self
-        var check = popped.top
-        while check != nil && !until(check!) {
+        while let top = popped.top, popWhere(top) {
             popped.pop()
-            check = popped.top
         }
 
         return popped
     }
 
+    mutating public func pop(until: (T) -> Bool) -> T? {
+        var last: T?
+        while let top = top, !until(top) {
+            last = pop()
+        }
+
+        return last
+    }
+
+    public func popped(until: (T) -> Bool) -> Stack {
+        var popped = self
+        while let top = top, !until(top) {
+            popped.pop()
+        }
+        return popped
+    }
 
     mutating public func clear() {
         array.removeAll()

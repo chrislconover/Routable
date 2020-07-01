@@ -90,3 +90,11 @@ open class Context: RoutableType {
     var container: Context? // indicates that contents is container, not content view controller
 }
 
+extension Context: CustomStringConvertible {
+    public var description: String {
+        let contextName = String(describing: type(of: self))
+        let controllerName = String(describing: type(of: viewController))
+        let description = "\(contextName)(\(controllerName)): \(routeName)"
+        return description
+    }
+}

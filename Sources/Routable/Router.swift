@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Veneer
 
 public class Router {
 
@@ -78,13 +79,17 @@ public class Router {
      - Parameter animated:    Optional flag to specify whether or not the operation is animated
      - Parameter completion:  Optional handler to be called when the operation is complete
      */
-    public func dismissModal(toPresenting controller: UIViewController? = nil,
+    public func dismissModal(toPresenting: UIViewController? = nil,
                              animated: Bool = true, completion: (() -> Void)? = nil) {
+        guard let toController = toPresenting?.viewController
+            ?? routes.top?.viewController.presentingViewController
+            else { return }
+        
         dismissModal(
-            until: { route in
-                guard let route = route as? Context.Modal else { return false }
-                guard let controller = controller else { return true }
-                return route.viewController.presentingViewController === controller },
+            while: { route in
+                Logger.route("looking for route: \(toPresenting) in \(route)")
+                guard let presenting = route.viewController.presentingViewController else { return false }
+                return presenting == toController },
             animated: animated,
             completion: completion)
     }
@@ -97,13 +102,15 @@ public class Router {
      - Parameter animated:    Optional flag to specify whether or not the operation is animated
      - Parameter completion:  Optional handler to be called when the operation is complete
      */
-    public func dismissModal(toPresenting: Route, animated: Bool = true,
+    public func dismissModal(toPresenting: Route?, animated: Bool = true,
                              completion: (() -> Void)? = nil) {
+        dismissModal(toPresenting: toPresenting?.viewController,
+                     animated: animated, completion: completion)
+    }
+
+    public func dismissAll(animated: Bool = true, completion: (() -> Void)? = nil) {
         dismissModal(
-            until: { route in
-                guard let route = route as? Context.Modal else { return false }
-                Logger.route("looking for route: \(toPresenting.routeName) in \(route.routeName)")
-                return route.viewController.presentingViewController?.routeName == route.routeName },
+            while: { _ in true },
             animated: animated,
             completion: completion)
     }
@@ -115,15 +122,20 @@ public class Router {
      - Parameter animated:    Optional flag to specify whether or not the operation is animated
      - Parameter completion:  Optional handler to be called when the operation is complete
      */
-    public func dismissModal(until: (Context) -> Bool,
+    public func dismissModal(while popWhile: (Context) -> Bool,
                              animated: Bool = true, completion: (() -> Void)? = nil) {
-        defer { Logger.route("\(#function).\(#line) after: \(routes.map { $0.routeName })") }
-        Logger.route("\(#function).\(#line) before: \(routes.map { $0.routeName })")
+        defer { Logger.route("after: \(routes)") }
+        Logger.route("before: \(routes)")
 
-        let poppedToModal = routes.popped(until: until)
-        guard let modalRoute = poppedToModal.top else { return }
-        routes = poppedToModal
-        modalRoute.dismiss(with: self, animated: animated, completion: completion)
+        var modal: Context?
+        while let top = routes.top, let presenting = top.viewController.presentingViewController {
+            guard popWhile(top) else { break }
+
+            let presenting = top.viewController.presentingViewController
+            routes.pop(until: { $0 is Context.Modal })
+            modal = routes.pop()
+        }
+        modal?.dismiss(with: self, animated: animated, completion: completion)
     }
 }
 
