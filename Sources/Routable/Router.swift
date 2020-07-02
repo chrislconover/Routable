@@ -60,6 +60,8 @@ public class Router {
         Logger.route("\(#function).\(#line) before: \(routes)")
         defer { Logger.route("\(#function).\(#line) after: \(routes)") }
 
+        cleanZombiePushContextsFromNavBarBackNeedBetterPlanHere()
+        
         guard let top = routes.top,
             let _ = top.viewController.navigationController
             else {
@@ -126,6 +128,8 @@ public class Router {
                              animated: Bool = true, completion: (() -> Void)? = nil) {
         defer { Logger.route("after: \(routes)") }
         Logger.route("before: \(routes)")
+        
+        cleanZombiePushContextsFromNavBarBackNeedBetterPlanHere()
 
         var modal: Context?
         while let top = routes.top, let presenting = top.viewController.presentingViewController {
@@ -136,6 +140,16 @@ public class Router {
             modal = routes.pop()
         }
         modal?.dismiss(with: self, animated: animated, completion: completion)
+    }
+    
+    func cleanZombiePushContextsFromNavBarBackNeedBetterPlanHere() {
+        Logger.route("before: \(routes)")
+        defer { Logger.route("after: \(routes)") }
+        routes.pop(where: {
+            let purge = $0 is Context.Push && $0.viewController.navigationController == nil
+            if purge { Logger.info("Purging zombie push context: \($0)") }
+            return purge
+        })
     }
 }
 

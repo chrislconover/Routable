@@ -74,7 +74,7 @@ open class Context: RoutableType {
         router.routes.push(self)
         container?.present(with: router, from: from, animated: animated, completion: completion)
     }
-
+    
     public func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
         Logger.route("\(#function).\(#line) before popping self: \(router.routes)")
         var top = router.routes.top
@@ -84,7 +84,7 @@ open class Context: RoutableType {
     }
 
     var unwindProxy: RouteProxyController!
-    var route: RouteType
+    public private(set) var route: RouteType
     var parent: RouteType?
     public var viewController: UIViewController
     var container: Context? // indicates that contents is container, not content view controller
