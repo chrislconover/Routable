@@ -28,8 +28,7 @@ extension RouteType where Self: UIViewController {
 
 public class AnyRoute: Route {
 
-    public init(name: String,
-                buildWith: @escaping () -> UIViewController) {
+    public init(name: String, buildWith: @escaping () -> UIViewController) {
         self.name = name
         self.buildWith = buildWith
     }
@@ -46,5 +45,3 @@ public class AnyRoute: Route {
     private lazy var lazyInstance: UIViewController = buildWith()
     private var name: String?
 }
-
-
