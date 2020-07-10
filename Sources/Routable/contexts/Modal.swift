@@ -53,19 +53,6 @@ extension Context {
 
         public typealias CustomTransition = (UIViewController, UIViewController) -> UIViewControllerTransitioningDelegate
 
-        //        init(route: Route, customTransition: CustomTransition? = nil) {
-        //            self.customTransition = customTransition
-        //            let proxy = Context.Proxy(route: route)
-        //            super.init(container: proxy)
-        //        }
-        //
-        //        init(container: Context, customTransition: CustomTransition? = nil) {
-        //            self.customTransition = customTransition
-        //            let proxy = Context.Proxy(container: container)
-        //            super.init(container: proxy)
-        //        }
-
-
         init(route: RouteType, customTransition: CustomTransition? = nil) {
             self.customTransition = customTransition
             super.init(route: route)
