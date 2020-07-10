@@ -27,7 +27,7 @@ public class Router {
     internal var rootController: UIViewController? {
         return window?.rootViewController }
 
-    public func present(_ context: Context, animated: Bool, completion: ((UIViewController) -> Void)? = nil) {
+    public func present(_ context: Context, animated: Bool = true, completion: ((UIViewController) -> Void)? = nil) {
         Logger.route("before: \(routes)")
         let from = displayedViewController
         context.present(with: self, from: from, animated: animated, completion: completion)
@@ -35,7 +35,8 @@ public class Router {
     }
 
     @discardableResult
-    public func present(_ contexts: Context..., animated: Bool, completion: ((UIViewController) -> Void)? = nil) -> Router {
+    public func present(_ contexts: Context..., animated: Bool = true,
+                        completion: ((UIViewController) -> Void)? = nil) -> Router {
 
         let remaining = contexts.dropFirst()
         guard let first = contexts.first
