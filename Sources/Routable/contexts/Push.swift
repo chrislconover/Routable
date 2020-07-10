@@ -10,21 +10,35 @@ import UIKit
 
 extension Context {
 
-    public static func push(_ route: RouteType) -> Push {
-        return Push(route: route) }
-    public static func push(_ route: Route) -> Push {
-        return Push(route: route) }
-    public static func push(_ nav: Navigation) -> Push {
-        return Push(container: nav) }
+    public static func push(_ route: RouteType, configure: ((UIViewController) -> Void)? = nil) -> Push {
+        Push(route: route, configure: configure) }
+    
+    public static func push(_ route: Route, configure: ((UIViewController) -> Void)? = nil) -> Push {
+        Push(route: route, configure: configure) }
+    
+    public static func push(_ nav: Navigation, configure: ((UIViewController) -> Void)? = nil) -> Push {
+        Push(container: nav, configure: configure) }
 
     public class Push: Context {
+        
+        init(route: RouteType, configure: ((UIViewController) -> Void)?) {
+            self.configure = configure
+            super.init(route: route)
+        }
+        
+        init(container: Context, configure: ((UIViewController) -> Void)?) {
+            self.configure = configure
+            super.init(container: container)
+        }
+        
         override public func present(with router: Router, from: UIViewController?,
                                      animated: Bool, completion: ((UIViewController) -> Void)?) {
             guard let from = from,
                 let nav = from as? UINavigationController ?? from.navigationController
-                else { return router.present(.modal(.navigation(self.route)), animated: false) }
+                else { return router.present(.modal(.navigation(route)), animated: false) }
             
-            nav.pushViewController(self.viewController, animated: animated)
+            nav.pushViewController(viewController, animated: animated)
+            configure?(viewController)
             super.present(
                 with: router, from: from, animated: false,
                 completion: { [weak self] _ in
@@ -36,5 +50,7 @@ extension Context {
             viewController.navigationController?.popViewController(animated: animated)
             super.dismiss(with: router, animated: false, completion: nil)
         }
+
+        var configure: ((UIViewController) -> Void)?
     }
 }
