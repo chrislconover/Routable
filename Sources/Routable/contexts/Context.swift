@@ -86,8 +86,10 @@ open class Context: RoutableType {
     var unwindProxy: RouteProxyController!
     public private(set) var route: RouteType
     var parent: RouteType?
+    
+    /// The nested view controller which may or may not be a container controller, like UINavigation Controller
     public var viewController: UIViewController
-    var container: Context? // indicates that contents is container, not content view controller
+    var container: Context?
 }
 
 extension Context: CustomStringConvertible {
