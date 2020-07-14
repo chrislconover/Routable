@@ -11,39 +11,39 @@ import UIKit
 extension Context {
 
 
-    public static func modal(_ route: RouteType, customTransition: Modal.CustomTransition? = nil) -> Modal {
+    public static func modal(_ route: RouteType, customTransition: Modal.CustomTransition? = nil) -> Context {
         Modal(route: route, customTransition: customTransition)
     }
 
     public static func modal(_ route: RouteType,
                              presentation: UIModalPresentationStyle,
-                             transition: UIModalTransitionStyle = .coverVertical) -> Modal {
+                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
         Modal(route: route, configure: { from, to in
                 to.modalPresentationStyle = presentation
                 to.modalTransitionStyle = transition })
     }
 
 
-    public static func modal(_ route: Route, customTransition: Modal.CustomTransition? = nil) -> Modal {
+    public static func modal(_ route: Route, customTransition: Modal.CustomTransition? = nil) -> Context {
         Modal(route: route, customTransition: customTransition)
     }
 
     public static func modal(_ route: Route,
                              presentation: UIModalPresentationStyle,
-                             transition: UIModalTransitionStyle = .coverVertical) -> Modal {
+                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
         Modal(route: route, configure: { from, to in
                 to.modalPresentationStyle = presentation
                 to.modalTransitionStyle = transition })
     }
 
 
-    public static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil) -> Modal {
+    public static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil) -> Context {
         Modal(container: nav, customTransition: customTransition)
     }
 
     public static func modal(_ nav: Navigation,
                              presentation: UIModalPresentationStyle,
-                             transition: UIModalTransitionStyle = .coverVertical) -> Modal {
+                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
         Modal(container: nav, configure: { from, to in
                 to.modalPresentationStyle = presentation
                 to.modalTransitionStyle = transition })
