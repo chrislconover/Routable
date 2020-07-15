@@ -10,24 +10,39 @@ import UIKit
 
 extension Context {
 
-    public static func push(_ route: RouteType, configure: ((UIViewController) -> Void)? = nil) -> Push {
-        Push(route: route, configure: configure) }
-    
-    public static func push(_ route: Route, configure: ((UIViewController) -> Void)? = nil) -> Push {
-        Push(route: route, configure: configure) }
-    
-    public static func push(_ nav: Navigation, configure: ((UIViewController) -> Void)? = nil) -> Push {
-        Push(container: nav, configure: configure) }
+    public static func push(_ route: RouteType,
+                            before: ((UINavigationController, UIViewController) -> Void)? = nil,
+                            after: ((UINavigationController, UIViewController) -> Void)? = nil) -> Push {
+        Push(route: route, before: before, after: after)
+    }
+
+    public static func push(_ route: Route,
+                            before: ((UINavigationController, UIViewController) -> Void)? = nil,
+                            after: ((UINavigationController, UIViewController) -> Void)? = nil) -> Push {
+        Push(route: route, before: before, after: after)
+    }
+
+    public static func push(_ nav: Navigation,
+                            before: ((UINavigationController, UIViewController) -> Void)? = nil,
+                            after: ((UINavigationController, UIViewController) -> Void)? = nil) -> Push {
+        Push(container: nav, before: before, after: after)
+    }
 
     public class Push: Context {
         
-        init(route: RouteType, configure: ((UIViewController) -> Void)?) {
-            self.configure = configure
+        init(route: RouteType,
+             before: ((UINavigationController, UIViewController) -> Void)?,
+             after: ((UINavigationController, UIViewController) -> Void)?) {
+            self.before = before
+            self.after = after
             super.init(route: route)
         }
         
-        init(container: Context, configure: ((UIViewController) -> Void)?) {
-            self.configure = configure
+        init(container: Context,
+             before: ((UINavigationController, UIViewController) -> Void)?,
+             after: ((UINavigationController, UIViewController) -> Void)?) {
+            self.before = before
+            self.after = after
             super.init(container: container)
         }
         
@@ -37,8 +52,9 @@ extension Context {
                 let nav = from as? UINavigationController ?? from.navigationController
                 else { return router.present(.modal(.navigation(route)), animated: false) }
             
+            before?(nav, viewController)
             nav.pushViewController(viewController, animated: animated)
-            configure?(viewController)
+            after?(nav, viewController)
             super.present(
                 with: router, from: from, animated: false,
                 completion: { [weak self] _ in
@@ -51,6 +67,7 @@ extension Context {
             super.dismiss(with: router, animated: false, completion: nil)
         }
 
-        var configure: ((UIViewController) -> Void)?
+        var before: ((UINavigationController, UIViewController) -> Void)?
+        var after: ((UINavigationController, UIViewController) -> Void)?
     }
 }

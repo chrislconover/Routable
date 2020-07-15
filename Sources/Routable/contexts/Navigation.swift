@@ -68,41 +68,35 @@ extension Context {
 
 
 extension UIViewController {
+
+    @discardableResult
+    public func withLeftButton(_ leftButton: UIBarButtonItem) -> Self {
+        navigationItem.leftBarButtonItem = leftButton
+        return self
+    }
+}
+
+
+extension UINavigationController {
     @discardableResult
     public func withCustomNavBar(background: UIColor? = nil,
                                  tint: UIColor? = nil,
                                  titleColor: UIColor? = nil,
-                                 backImage: UIImage? = nil,
-                                 firstLeftButton: UIBarButtonItem? = nil) -> Self {
-        assert(navigationController != nil)
-        guard let navigationController = navigationController else { return self }
-        if let firstLeftButton = firstLeftButton {
-            navigationItem.leftBarButtonItem = firstLeftButton
-        }
-
+                                 backImage: UIImage? = nil) -> Self {
         // configure nav controller bar
-        let navBar = navigationController.navigationBar
-        navBar.barTintColor = background ?? view.backgroundColor
-        if let tint = tint { navBar.tintColor = tint }
+        navigationBar.barTintColor = background ?? view.backgroundColor
+        if let tint = tint { navigationBar.tintColor = tint }
         if let titleColor = titleColor {
-            navBar.titleTextAttributes = [.foregroundColor: titleColor]
+            navigationBar.titleTextAttributes = [.foregroundColor: titleColor]
         }
 
-        navBar.isTranslucent = false
-        navBar.setBackgroundImage(UIImage(), for: .default)
-        navBar.shadowImage = UIImage()
+        navigationBar.isTranslucent = false
+        navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationBar.shadowImage = UIImage()
         if let backImage = backImage {
-            navBar.backIndicatorImage = backImage
-            navBar.backIndicatorTransitionMaskImage = backImage
+            navigationBar.backIndicatorImage = backImage
+            navigationBar.backIndicatorTransitionMaskImage = backImage
         }
-        return self
-    }
-    
-    @discardableResult
-    public func withLeftButton(_ leftButton: UIBarButtonItem) -> Self {
-        guard let navigationController = navigationController
-            else { assert(false); return self }
-        navigationItem.leftBarButtonItem = leftButton
         return self
     }
 }
