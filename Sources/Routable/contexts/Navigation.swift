@@ -70,10 +70,17 @@ extension Context {
 extension UIViewController {
 
     @discardableResult
-    public func withLeftButton(_ leftButton: UIBarButtonItem) -> Self {
-        navigationItem.leftBarButtonItem = leftButton
+    public func withLeftButton(_ button: UIBarButtonItem) -> Self {
+        navigationItem.leftBarButtonItem = button
         return self
     }
+    
+    @discardableResult
+    public func withRightButton(_ button: UIBarButtonItem) -> Self {
+        navigationItem.rightBarButtonItem = button
+        return self
+    }
+
 }
 
 
