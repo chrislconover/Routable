@@ -33,7 +33,7 @@ extension ClosedRange {
 }
 
 
-extension Range where Bound == Int {
+extension Range {
     func clamp(_ value: Bound) -> Bound {
         return (value ..< value).clamped(to: self).lowerBound
     }
