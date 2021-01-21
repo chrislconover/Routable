@@ -16,37 +16,41 @@ extension Context {
     }
 
     public static func modal(_ route: RouteType,
-                             presentation: UIModalPresentationStyle,
-                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
-        Modal(route: route, configure: { from, to in
-                to.modalPresentationStyle = presentation
-                to.modalTransitionStyle = transition })
+                             presentation: UIModalPresentationStyle? = nil,
+                             transition: UIModalTransitionStyle? = nil,
+                             configure: ((UIViewController, UIViewController) -> Void)? = nil) -> Context {
+        Modal(route: route) { from, to in
+            if let presentation = presentation { to.modalPresentationStyle = presentation }
+            if let transition = transition { to.modalTransitionStyle = transition }
+            configure?(from, to) }
     }
-
 
     public static func modal(_ route: Route, customTransition: Modal.CustomTransition? = nil) -> Context {
         Modal(route: route, customTransition: customTransition)
     }
 
     public static func modal(_ route: Route,
-                             presentation: UIModalPresentationStyle,
-                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
-        Modal(route: route, configure: { from, to in
-                to.modalPresentationStyle = presentation
-                to.modalTransitionStyle = transition })
-    }
-
-
-    public static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil) -> Context {
-        Modal(container: nav, customTransition: customTransition)
+                             presentation: UIModalPresentationStyle? = nil,
+                             transition: UIModalTransitionStyle? = nil,
+                             configure: ((UIViewController, UIViewController) -> Void)? = nil) -> Context {
+        Modal(route: route) { from, to in
+            if let presentation = presentation { to.modalPresentationStyle = presentation }
+            if let transition = transition { to.modalTransitionStyle = transition }
+            configure?(from, to) }
     }
 
     public static func modal(_ nav: Navigation,
-                             presentation: UIModalPresentationStyle,
-                             transition: UIModalTransitionStyle = .coverVertical) -> Context {
-        Modal(container: nav, configure: { from, to in
-                to.modalPresentationStyle = presentation
-                to.modalTransitionStyle = transition })
+                             presentation: UIModalPresentationStyle? = nil,
+                             transition: UIModalTransitionStyle? = nil,
+                             configure: ((UIViewController, UIViewController) -> Void)? = nil) -> Context {
+        Modal(container: nav) { from, to in
+            if let presentation = presentation { to.modalPresentationStyle = presentation }
+            if let transition = transition { to.modalTransitionStyle = transition }
+            configure?(from, to) }
+    }
+
+    public static func modal(_ nav: Navigation, customTransition: Modal.CustomTransition? = nil) -> Context {
+        Modal(container: nav, customTransition: customTransition)
     }
 
     public class Modal: Context {

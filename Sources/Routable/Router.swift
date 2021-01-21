@@ -28,7 +28,7 @@ public class Router {
         return window?.rootViewController }
 
     public func present(_ context: Context, animated: Bool = true, completion: ((UIViewController) -> Void)? = nil) {
-        Logger.route("before: \(routes)")
+        Logger.route("Presenting: \(context.routeName), animated: \(animated)")
         let from = displayedViewController
         context.present(with: self, from: from, animated: animated, completion: completion)
         Logger.route("after: \(routes)")
