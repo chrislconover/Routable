@@ -10,23 +10,29 @@ import UIKit
 public typealias TransitionStrategy = (UIView, @escaping (() -> Void), ((Bool) -> Void)?) -> Void
 
 public class Transition {
-
-    public static var flipIn: TransitionStrategy {
-        return viewTransitionWith(option: .transitionFlipFromRight)
+    
+    public init(transition: @escaping TransitionStrategy) {
+        self.transform = transition
     }
 
-    public static var flipOut: TransitionStrategy {
-        return viewTransitionWith(option: .transitionFlipFromLeft)
+    public static func flipIn(duration: TimeInterval) -> Transition {
+        viewTransition(with: .transitionFlipFromRight, duration: duration)
     }
 
-    private static func viewTransitionWith(option: UIView.AnimationOptions) -> TransitionStrategy {
-        return { container, animation, completion in
+    public static func flipOut(duration: TimeInterval) -> Transition {
+        viewTransition(with: .transitionFlipFromLeft, duration: duration)
+    }
+
+    public static func viewTransition(with option: UIView.AnimationOptions,
+                                      duration: TimeInterval) -> Transition {
+        .init() { container, animation, completion in
             UIView.transition(
                 with: container,
-                duration: 1.0,
+                duration: duration,
                 options: option,
                 animations: animation,
-                completion: completion)
-        }
+                completion: completion) }
     }
+    
+    public private(set) var transform: TransitionStrategy
 }

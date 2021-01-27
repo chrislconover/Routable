@@ -13,11 +13,33 @@ extension Context {
 
     public static func root(_ route: RouteType, animation: TransitionStrategy? = nil) -> Root {
         return Root(route: route, animation: animation) }
+    public static func root(_ route: RouteType, animation: Transition) -> Root {
+        return Root(route: route, animation: animation.transform) }
+    public static func root(_ route: RouteType,
+                            option: UIView.AnimationOptions,
+                            duration: TimeInterval) -> Root {
+        root(route, animation: .viewTransition(with: option, duration: duration))
+    }
+
     public static func root(_ route: Route, animation: TransitionStrategy? = nil) -> Root {
         return Root(route: route, animation: animation) }
+    public static func root(_ route: Route, animation: Transition) -> Root {
+        return Root(route: route, animation: animation.transform) }
+    public static func root(_ route: Route,
+                            option: UIView.AnimationOptions,
+                            duration: TimeInterval) -> Root {
+        root(route, animation: .viewTransition(with: option, duration: duration))
+    }
+
     public static func root(_ container: Context, animation: TransitionStrategy? = nil) -> Root {
         return Context.Root(container: container, animation: animation) }
-
+    public static func root(_ container: Context, animation: Transition) -> Root {
+        return Context.Root(container: container, animation: animation.transform) }
+    public static func root(_ container: Context,
+                            option: UIView.AnimationOptions,
+                            duration: TimeInterval) -> Root {
+        root(container, animation: .viewTransition(with: option, duration: duration))
+    }
 
     public class Root: Context {
 
@@ -42,24 +64,28 @@ extension Context {
         public override func present(with router: Router, from: UIViewController?, animated: Bool,
                               completion: ((UIViewController) -> Void)?) {
 
-            let transition: () -> Void = { [unowned self] in
-                router.window.rootViewController = self.viewController }
+            // reaet router stack, prepare any nested containers
+            router.routes.clear()
+            router.routes.push(self)
+            container?.present(with: router, from: from, animated: animated, completion: completion)
 
-            if let animation = animation {
-                animation(router.window, transition, { [weak self] _ in
-                    guard let viewController = self?.viewController else { return }
-                    completion?(viewController) })
+            let transition: () -> Void = { [unowned self] in
+                router.window.rootViewController = self.viewController
+            }
+
+            if animated, let animation = animation {
+                animation(
+                    router.window,
+                    transition,
+                    { [weak self] _ in
+                        guard let viewController = self?.viewController else { return }
+                        completion?(viewController) })
             }
 
             else {
                 transition()
+                completion?(viewController)
             }
-
-            router.routes.clear()
-            router.routes.push(self)
-
-            super.present(with: router, from: from, animated: false, completion: nil)
-            completion?(viewController)
         }
 
         public override func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
