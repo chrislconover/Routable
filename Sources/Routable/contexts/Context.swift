@@ -50,7 +50,7 @@ open class Context: RoutableType {
     }
 
     /**
-     Create a routing context that hosts a nested container context
+     Create a routing context that hosts a nested container context, such as modally presenting a controller nested in a  navigation controller
 
      - Parameter route: concrete route nested in container
      - Parameter container: container context ultimately containing the concrete route
@@ -64,13 +64,12 @@ open class Context: RoutableType {
     }
 
     public func present(with router: Router, from: UIViewController?,
-                 animated: Bool, completion: ((UIViewController) -> Void)?) {
+                        animated: Bool, completion: ((UIViewController) -> Void)?) {
         Logger.route("\(#function) Adding \(self) to stack")
         
         guard let root = router.window.rootViewController else {
             return router.present(.root(self), animated: false) }
         
-        let top = router.routes.top
         router.routes.push(self)
         container?.present(with: router, from: from, animated: animated, completion: completion)
     }
