@@ -48,9 +48,13 @@ extension Context {
         
         override public func present(with router: Router, from: UIViewController?,
                                      animated: Bool, completion: ((UIViewController) -> Void)?) {
-            guard let from = from,
+            guard
+                let from = from,
                 let nav = from as? UINavigationController ?? from.navigationController
-                else { return router.present(.modal(.navigation(route)), animated: false) }
+            else {
+                assert(false, "Use explicit Navigation context to avoid nesting Modal...")
+                return router.present(.modal(.navigation(route)), animated: false)                
+            }
             
             before?(nav, viewController)
             nav.pushViewController(viewController, animated: animated)
