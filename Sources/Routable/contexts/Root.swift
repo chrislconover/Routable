@@ -70,6 +70,8 @@ extension Context {
             container?.present(with: router, from: from, animated: animated, completion: completion)
 
             let transition: () -> Void = { [unowned self] in
+                assert((animated && UIView.inheritedAnimationDuration > 0)
+                        || (!animated && UIView.inheritedAnimationDuration == 0))
                 router.window.rootViewController = self.viewController
             }
 
@@ -83,7 +85,10 @@ extension Context {
             }
 
             else {
+                let restoreState = UIView.areAnimationsEnabled
+                UIView.setAnimationsEnabled(false)
                 transition()
+                UIView.setAnimationsEnabled(restoreState)
                 completion?(viewController)
             }
         }
