@@ -84,24 +84,32 @@ public class PagesModel {
         return pages[before].viewController
     }
 
-    func before(page: PageBuilder.Key) throws -> UIViewController? {
-        let before = try (index(of: page) - 1).clamped(to: (0 ..< pages.count))
-        return pages[before].viewController
+    func before(page: PageBuilder.Key) -> UIViewController? {
+        guard let index = try? index(of: page),
+              pages.indices.contains(index - 1)
+        else { return nil }
+        return pages[index - 1].viewController
     }
 
-    func before(page: UIViewController) throws -> UIViewController {
-        let before = try (index(of: page) - 1).clamped(to: (0 ..< pages.count))
-        return pages[before].viewController
+    func before(page: UIViewController) -> UIViewController? {
+        guard let index = try? index(of: page),
+              pages.indices.contains(index - 1)
+        else { return nil }
+        return pages[index - 1].viewController
     }
 
-    func after(page: PageBuilder.Key) throws -> UIViewController {
-        let after = try (index(of: page) + 1).clamped(to: (0 ..< pages.count))
-        return pages[after].viewController
+    func after(page: PageBuilder.Key) -> UIViewController? {
+        guard let index = try? index(of: page),
+              pages.indices.contains(index + 1)
+        else { return nil }
+        return pages[index + 1].viewController
     }
 
-    func after(page: UIViewController) throws -> UIViewController {
-        let after = try (index(of: page) + 1).clamped(to: (0 ..< pages.count))
-        return pages[after].viewController
+    func after(page: UIViewController) -> UIViewController? {
+        guard let index = try? index(of: page),
+              pages.indices.contains(index + 1)
+        else { return nil }
+        return pages[index + 1].viewController
     }
 
     func index(of page: PageBuilder) throws -> Int {

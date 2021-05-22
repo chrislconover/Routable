@@ -44,14 +44,21 @@ extension PageViewController: UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController,
                             viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        let before = try! model.before(page: viewController)
-        Logger.route("PageViewController.\(#function) -> \(before.routeName)")
+        guard let before = model.before(page: viewController) else {
+            Logger.debug("before \(viewController.routeName) -> <none>")
+            return nil }
+
+        Logger.debug("before \(viewController.routeName) -> \(before.routeName)")
         return before
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let after = try! model.after(page: viewController)
-        Logger.route("PageViewController.\(#function) -> \(after.routeName)")
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let after = model.after(page: viewController) else {
+            Logger.debug("after \(viewController.routeName) -> <none>")
+            return nil }
+        
+        Logger.debug("after \(viewController.routeName) -> \(after.routeName)")
         return after
     }
 }

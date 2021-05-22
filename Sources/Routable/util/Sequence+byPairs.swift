@@ -32,19 +32,7 @@ extension ClosedRange {
     }
 }
 
-
-extension Range {
-    func clamp(_ value: Bound) -> Bound {
-        return (value ..< value).clamped(to: self).lowerBound
-    }
-}
-
 extension Int {
-    func clamped( to: Range<Int>) -> Int {
-        return to.clamp(self)
-    }
-
-    func clamped(to: ClosedRange<Int>) -> Int {
-        return to.clamp(self)
-    }
+    func clamped( to: Range<Int>) -> Int { (to.lowerBound ... to.upperBound - 1).clamp(self) }
+    func clamped(to: ClosedRange<Int>) -> Int { to.clamp(self) }
 }
