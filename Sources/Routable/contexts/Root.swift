@@ -67,12 +67,12 @@ extension Context {
             // reaet router stack, prepare any nested containers
             router.routes.clear()
             router.routes.push(self)
-            container?.present(with: router, from: from, animated: animated, completion: completion)
 
             let transition: () -> Void = { [unowned self] in
                 assert((animated && UIView.inheritedAnimationDuration > 0)
                         || (!animated && UIView.inheritedAnimationDuration == 0))
                 router.window.rootViewController = self.viewController
+                container?.present(with: router, from: from, animated: animated, completion: completion)
             }
 
             if animated, let animation = animation {
