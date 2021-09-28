@@ -5,9 +5,9 @@
         "package": "Veneer",
         "repositoryURL": "https://github.com/chrislconover/Veneer.git",
         "state": {
-          "branch": null,
-          "revision": "d85f6d4194411b5a2bbc163d93838b15b845076e",
-          "version": "0.1.0"
+          "branch": "master",
+          "revision": "94c2f9b7841258b75f01182a3e4d852f7800385d",
+          "version": null
         }
       }
     ]

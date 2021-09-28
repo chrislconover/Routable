@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -12,7 +12,7 @@ let package = Package(
             targets: ["Routable"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/chrislconover/Veneer.git", from: "0.1.0")
+        .package(url: "https://github.com/chrislconover/Veneer.git", branch: "master")
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
