@@ -90,7 +90,7 @@ public class Router {
         
         dismissModal(
             while: { route in
-                Logger.route("looking for route: \(toPresenting) in \(route)")
+                Logger.route("looking for route: \(toController.routeName) in \(route)")
                 guard let presenting = route.viewController.presentingViewController else { return false }
                 return presenting == toController },
             animated: animated,
@@ -133,11 +133,9 @@ public class Router {
         cleanZombiePushContextsFromNavBarBackNeedBetterPlanHere()
 
         var modal: Context?
-        while let top = routes.top, let presenting = top.viewController.presentingViewController {
+        while let top = routes.top, let _ = top.viewController.presentingViewController {
             guard popWhile(top) else { break }
-
-            let presenting = top.viewController.presentingViewController
-            routes.pop(until: { $0 is Context.Modal })
+            _ = routes.pop(until: { $0 is Context.Modal })
             modal = routes.pop()
         }
         modal?.dismiss(with: self, animated: animated, completion: completion)

@@ -67,7 +67,7 @@ open class Context: RoutableType {
                         animated: Bool, completion: ((UIViewController) -> Void)?) {
         Logger.route("\(#function) Adding \(self) to stack")
         
-        guard let root = router.window.rootViewController else {
+        guard let _ = router.window.rootViewController else {
             return router.present(.root(self), animated: false) }
         
         router.routes.push(self)
@@ -76,7 +76,7 @@ open class Context: RoutableType {
     
     public func dismiss(with router: Router, animated: Bool, completion: (() -> Void)?) {
         Logger.route("\(#function).\(#line) before popping self: \(router.routes)")
-        var top = router.routes.top
+        let top = router.routes.top
         top?.parent = nil
         router.routes.pop()
         Logger.route("\(#function).\(#line) after popping self: \(router.routes)")
