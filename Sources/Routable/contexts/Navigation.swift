@@ -89,12 +89,30 @@ extension UINavigationController {
     public func withCustomNavBar(background: UIColor? = nil,
                                  tint: UIColor? = nil,
                                  titleColor: UIColor? = nil,
+                                 font: UIFont? = nil,
                                  backImage: UIImage? = nil) -> Self {
+        
         // configure nav controller bar
-        navigationBar.barTintColor = background ?? view.backgroundColor
-        if let tint = tint { navigationBar.tintColor = tint }
-        if let titleColor = titleColor {
-            navigationBar.titleTextAttributes = [.foregroundColor: titleColor]
+        if #available(iOS 13, *) {
+            if let background = background {
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = background
+                var attributes = appearance.titleTextAttributes ?? [:]
+                if let titleColor = titleColor { attributes[.foregroundColor] = titleColor }
+                if let font = font { attributes[.font] = font }
+                appearance.titleTextAttributes = attributes
+                navigationBar.standardAppearance = appearance;
+                navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
+            }
+            
+            else {
+                navigationBar.barTintColor = background ?? view.backgroundColor
+                if let tint = tint { navigationBar.tintColor = tint }
+                if let titleColor = titleColor {
+                    navigationBar.titleTextAttributes = [.foregroundColor: titleColor]
+                }
+            }
         }
 
         navigationBar.isTranslucent = false
