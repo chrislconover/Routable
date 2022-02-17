@@ -7,6 +7,10 @@
 
 import Veneer
 
+extension String: Error, LocalizedError {
+    public var errorDescription: String? { self }
+}
+
 public var logLevel: LogLevel {
     get { Logger.logLevel }
     set { Logger.logLevel = newValue }

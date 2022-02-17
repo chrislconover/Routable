@@ -8,8 +8,6 @@
 
 import UIKit
 
-extension String: Error {}
-
 
 public class PageBuilder: RouteType {
 
